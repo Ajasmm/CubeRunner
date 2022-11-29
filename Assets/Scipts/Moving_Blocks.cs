@@ -23,12 +23,30 @@ public class Moving_Blocks : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        timeFactor += Time.deltaTime * currentSpeed;
+        timeFactor += Time.fixedDeltaTime * currentSpeed;
         currentPos.x = Mathf.Sin(timeFactor * Mathf.PI) * displacementDistance;
         currentPos.x += initPos.x;
 
         myTransform.position = currentPos;
+    }
+
+    private void OnTriggerEnter(Collider collision)
+    {
+        if (collision.attachedRigidbody == null)
+            return;
+
+        Vector3 direction = collision.transform.position - transform.position;
+        direction.Normalize();
+        direction.y = 0.5F;
+
+        if (collision.attachedRigidbody.gameObject.tag == "Player")
+        {
+            collision.attachedRigidbody.AddForce(direction * 100, ForceMode.Impulse);
+
+            Cube_Player player = collision.attachedRigidbody.GetComponent<Cube_Player>();
+            player.SetState(PlayerState.Dead);
+        }
     }
 }
