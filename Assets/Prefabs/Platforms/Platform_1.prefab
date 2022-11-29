@@ -1040,7 +1040,7 @@ GameObject:
   - component: {fileID: 3882590136482702400}
   m_Layer: 0
   m_Name: Base_1
-  m_TagString: Untagged
+  m_TagString: Platform
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -1385,7 +1385,7 @@ GameObject:
   - component: {fileID: 8872397822851077628}
   m_Layer: 0
   m_Name: Base_2
-  m_TagString: Untagged
+  m_TagString: Platform
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647

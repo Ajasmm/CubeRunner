@@ -23,6 +23,8 @@ public class Cube_Player : MonoBehaviour
 
         GameplayManager.manager.gamePlayer = this;
         GameplayManager.manager.playerTransform = myTransform;
+
+        Application.targetFrameRate = 60;
     }
 
     // Update is called once per frame
@@ -50,13 +52,7 @@ public class Cube_Player : MonoBehaviour
 
     private void InputHandle()
     {
-        if (myTransform.position.y > 0.1F && playerState != PlayerState.Flying && playerState != PlayerState.Ready && playerState != PlayerState.Dead)
-            playerState = PlayerState.Jumping;
-
-        if(myTransform.position.y <= 0.5F && playerState != PlayerState.Ready && playerState != PlayerState.Dead && (playerState == PlayerState.Jumping || playerState == PlayerState.Flying))
-                  playerState= PlayerState.Running;
-            
-
+        
         switch (playerState)
         {
             case PlayerState.Ready:
@@ -73,12 +69,12 @@ public class Cube_Player : MonoBehaviour
                 else Move(movement);
                 break;
             case PlayerState.Jumping:
-                movement.x = Input.GetAxis("Horizontal") * Time.fixedDeltaTime * speed;
+                movement.x = Input.GetAxis("Horizontal") * Time.deltaTime * speed;
                 movement.z = (speed + (Mathf.Clamp(Input.GetAxis("Vertical"), 0, 1) * addedSpeed)) * Time.deltaTime;
                 Move(movement);
                 break;
             case PlayerState.Flying:
-                movement.x = Input.GetAxis("Horizontal") * Time.fixedDeltaTime * speed;
+                movement.x = Input.GetAxis("Horizontal") * Time.deltaTime * speed;
                 movement.z = (speed + (Mathf.Clamp(Input.GetAxis("Vertical"), 0, 1) * addedSpeed)) * Time.deltaTime;
                 Move(movement);
                 break;
@@ -96,6 +92,12 @@ public class Cube_Player : MonoBehaviour
         {
             GameplayManager.manager.EndGame();
         }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Platform" && !(playerState == PlayerState.Ready || playerState == PlayerState.Dead))
+            playerState = PlayerState.Running;
     }
 }
 

@@ -34,6 +34,8 @@ public class Hammer : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        Debug.Log("HI");
+        Debug.Log(collision.rigidbody.gameObject.name);
         if (collision.rigidbody.gameObject.tag == "Player")
         {
             Vector3 direction = collision.transform.position - collision.contacts[0].point;
