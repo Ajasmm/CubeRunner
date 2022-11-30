@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Blocks
   - Platform
+  - Projectile
   layers:
   - Default
   - TransparentFX

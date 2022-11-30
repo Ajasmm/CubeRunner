@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -8,7 +9,7 @@ public class Cube_Player : MonoBehaviour
     [SerializeField] protected float speed = 10;
     [SerializeField] protected float addedSpeed = 15;
 
-    [SerializeField] PlayerState playerState;
+    [SerializeField] GameState playerState;
     Vector3 movement;
 
     Rigidbody rbody;
@@ -17,7 +18,7 @@ public class Cube_Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        playerState = PlayerState.Ready;
+        SetState(GameState.Ready);
         rbody = GetComponent<Rigidbody>();
         myTransform = transform;
 
@@ -30,12 +31,15 @@ public class Cube_Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(myTransform.position.y < -2)
+            SetState(GameState.Dead);
+
         InputHandle();
     }
 
     void Jump(Vector3 direction)
     {
-        playerState = PlayerState.Jumping;
+        SetState(GameState.Jumping);
         rbody.AddForce(Vector3.up * 10 * rbody.mass, ForceMode.Impulse);
         Move(direction);
     }
@@ -55,53 +59,59 @@ public class Cube_Player : MonoBehaviour
         
         switch (playerState)
         {
-            case PlayerState.Ready:
+            case GameState.Ready:
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
-                    playerState = PlayerState.Running;
+                    SetState(GameState.Running);
                     GameplayManager.manager.StartGame();
                 }
                 break;
-            case PlayerState.Running:
+            case GameState.Running:
                 movement.x = Input.GetAxis("Horizontal") * Time.deltaTime * speed;
                 movement.z = (speed + (Mathf.Clamp(Input.GetAxis("Vertical"), 0, 1) * addedSpeed)) * Time.deltaTime;
                 if (Input.GetKeyDown(KeyCode.Space)) Jump(movement);
                 else Move(movement);
                 break;
-            case PlayerState.Jumping:
+            case GameState.Jumping:
                 movement.x = Input.GetAxis("Horizontal") * Time.deltaTime * speed;
                 movement.z = (speed + (Mathf.Clamp(Input.GetAxis("Vertical"), 0, 1) * addedSpeed)) * Time.deltaTime;
                 Move(movement);
                 break;
-            case PlayerState.Flying:
+            case GameState.Flying:
                 movement.x = Input.GetAxis("Horizontal") * Time.deltaTime * speed;
                 movement.z = (speed + (Mathf.Clamp(Input.GetAxis("Vertical"), 0, 1) * addedSpeed)) * Time.deltaTime;
                 Move(movement);
                 break;
-            case PlayerState.Dead:
+            case GameState.Dead:
                 break;
         }
 
     }
 
-    public void SetState(PlayerState state)
+    public void SetState(GameState state)
     {
         playerState = state;
+        GameplayManager.manager.SetGameState(playerState);
 
-        if(state == PlayerState.Dead)
+        if(state == GameState.Dead)
         {
             GameplayManager.manager.EndGame();
         }
     }
 
+    public GameState GetState()
+    {
+        return playerState;
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Platform" && !(playerState == PlayerState.Ready || playerState == PlayerState.Dead))
-            playerState = PlayerState.Running;
+        if (collision.gameObject.tag == "Platform" && !(playerState == GameState.Ready || playerState == GameState.Dead))
+            SetState(GameState.Running);
     }
 }
 
-public enum PlayerState
+public enum GameState
 {
     Ready,
     Running,

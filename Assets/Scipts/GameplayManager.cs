@@ -10,10 +10,16 @@ public class GameplayManager : MonoBehaviour
     [SerializeField] GameObject gameRunningWindow;
     [SerializeField] GameObject gameEndWindow;
 
+    public Action<GameState> OnGameState;
+
     public Cube_Player gamePlayer;
     public Transform playerTransform;
 
+    public float score;
+
     public static GameplayManager manager;
+
+    GameState gameState;
 
     private void OnEnable()
     {
@@ -62,12 +68,25 @@ public class GameplayManager : MonoBehaviour
             gameEndWindow.SetActive(true);
     }
 
+    public GameState GetGameState()
+    {
+        return gameState;
+    }
+    public void SetGameState(GameState state)
+    {
+        this.gameState = state;
+        if (OnGameState != null)
+            OnGameState(state);
+    }
+
     public void RestartGame()
     {
         Readygame();
-        gamePlayer.SetState(PlayerState.Ready);
+        gamePlayer.SetState(GameState.Ready);
 
-        gamePlayer.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        Rigidbody rBody = gamePlayer.GetComponent<Rigidbody>();
+        rBody.velocity = Vector3.zero;
+        rBody.ResetInertiaTensor();
         gamePlayer.transform.position = Vector3.zero + Vector3.forward;
         gamePlayer.transform.rotation = Quaternion.identity;
 

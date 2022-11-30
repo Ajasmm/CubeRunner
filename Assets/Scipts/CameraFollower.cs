@@ -23,6 +23,9 @@ public class CameraFollower : MonoBehaviour
         if (target == null)
             return;
 
+        if (GameplayManager.manager.gamePlayer.GetState() == GameState.Dead)
+            return;
+
         currentPos = target.position + offsetPos;
         myTransform.position = currentPos;
         myTransform.LookAt(target);
