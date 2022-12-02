@@ -8,7 +8,7 @@ public class Moving_Blocks : MonoBehaviour
     [SerializeField][Range(1, 10)] float speed = 1;
 
     Vector3 currentPos, initPos;
-    float timeFactor = 0, currentSpeed = 0;
+    [SerializeField] float timeFactor = 0, currentSpeed = 0;
 
     Transform myTransform;
 
@@ -26,6 +26,7 @@ public class Moving_Blocks : MonoBehaviour
     void FixedUpdate()
     {
         timeFactor += Time.fixedDeltaTime * currentSpeed;
+        timeFactor %= 2F;
         currentPos.x = Mathf.Sin(timeFactor * Mathf.PI) * displacementDistance;
         currentPos.x += initPos.x;
 

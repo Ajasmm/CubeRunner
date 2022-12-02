@@ -11,6 +11,7 @@ public class Cube_Player : MonoBehaviour
 
     [SerializeField] GameState playerState;
     Vector3 movement;
+    PlayerInput playerInput;
 
     Rigidbody rbody;
     Transform myTransform;
@@ -22,34 +23,41 @@ public class Cube_Player : MonoBehaviour
         rbody = GetComponent<Rigidbody>();
         myTransform = transform;
 
-        GameplayManager.manager.gamePlayer = this;
-        GameplayManager.manager.playerTransform = myTransform;
+        GamePlayManager.manager.gamePlayer = this;
+        GamePlayManager.manager.playerTransform = myTransform;
 
-        Application.targetFrameRate = 60;
+        playerInput = new PlayerInput(false);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (playerState == GameState.Dead)
+            return;
+
         if(myTransform.position.y < -2)
             SetState(GameState.Dead);
 
         InputHandle();
     }
 
+    private void FixedUpdate()
+    {
+        rbody.MovePosition(myTransform.position + playerInput.movement);
+        playerInput.movement = Vector3.zero;
+    }
+
     void Jump(Vector3 direction)
     {
         SetState(GameState.Jumping);
         rbody.AddForce(Vector3.up * 10 * rbody.mass, ForceMode.Impulse);
-        Move(direction);
-    }
-    void Fly()
-    {
-        
+        playerInput.movement += direction;
     }
     protected void Move(Vector3 direction)
     {
-        rbody.MovePosition(myTransform.position + movement);
+        playerInput.movement += direction;
+
+        // if not looking at forward rotate the cube towards the forward direction
         if(Vector3.Dot(myTransform.forward, Vector3.forward) != 1)
             myTransform.LookAt(Vector3.Lerp(myTransform.forward, myTransform.position + Vector3.forward, 0.5f));
     }
@@ -59,13 +67,6 @@ public class Cube_Player : MonoBehaviour
         
         switch (playerState)
         {
-            case GameState.Ready:
-                if (Input.GetKeyDown(KeyCode.Space))
-                {
-                    SetState(GameState.Running);
-                    GameplayManager.manager.StartGame();
-                }
-                break;
             case GameState.Running:
                 movement.x = Input.GetAxis("Horizontal") * Time.deltaTime * speed;
                 movement.z = (speed + (Mathf.Clamp(Input.GetAxis("Vertical"), 0, 1) * addedSpeed)) * Time.deltaTime;
@@ -77,13 +78,6 @@ public class Cube_Player : MonoBehaviour
                 movement.z = (speed + (Mathf.Clamp(Input.GetAxis("Vertical"), 0, 1) * addedSpeed)) * Time.deltaTime;
                 Move(movement);
                 break;
-            case GameState.Flying:
-                movement.x = Input.GetAxis("Horizontal") * Time.deltaTime * speed;
-                movement.z = (speed + (Mathf.Clamp(Input.GetAxis("Vertical"), 0, 1) * addedSpeed)) * Time.deltaTime;
-                Move(movement);
-                break;
-            case GameState.Dead:
-                break;
         }
 
     }
@@ -91,11 +85,11 @@ public class Cube_Player : MonoBehaviour
     public void SetState(GameState state)
     {
         playerState = state;
-        GameplayManager.manager.SetGameState(playerState);
+        GamePlayManager.manager.SetGameState(playerState);
 
         if(state == GameState.Dead)
         {
-            GameplayManager.manager.EndGame();
+            GamePlayManager.manager.EndGame();
         }
     }
 
@@ -109,13 +103,4 @@ public class Cube_Player : MonoBehaviour
         if (collision.gameObject.tag == "Platform" && !(playerState == GameState.Ready || playerState == GameState.Dead))
             SetState(GameState.Running);
     }
-}
-
-public enum GameState
-{
-    Ready,
-    Running,
-    Jumping,
-    Flying,
-    Dead
 }

@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Blocks : MonoBehaviour
 {
-    
 
     private void OnTriggerEnter(Collider collision)
     {

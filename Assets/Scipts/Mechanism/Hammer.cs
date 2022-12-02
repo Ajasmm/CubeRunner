@@ -24,9 +24,9 @@ public class Hammer : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        time += Time.deltaTime * speed / 10;
-        time %= 1;
-        sine = Mathf.Sin(time * 2 * Mathf.PI);
+        time += Time.fixedDeltaTime * speed / 10;
+        time %= 2;
+        sine = Mathf.Sin(time * Mathf.PI);
 
         localEuler.z = range * sine;
         myTransform.localEulerAngles = localEuler;

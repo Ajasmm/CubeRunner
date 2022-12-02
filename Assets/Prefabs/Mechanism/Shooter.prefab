@@ -59,4 +59,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeGap: 1
-  projectile: {fileID: 0}
+  projectile: {fileID: 5292199174316802719, guid: 0ed9b89b4c7929844b05cd37404aa2e7, type: 3}
