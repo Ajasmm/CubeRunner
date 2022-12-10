@@ -11,7 +11,7 @@ public class Shooter : MonoBehaviour
     List<GameObject> activeProjectiles = new List<GameObject>();
 
     int centerPos = 0;
-    Vector3 shootPos = Vector3.zero;
+    Vector3 shootPos = Vector3.forward;
     float timeMesure = 0;
 
     Transform myTransform;
@@ -26,12 +26,12 @@ public class Shooter : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (GamePlayManager.manager.GetGameState() == GameState.Ready || GamePlayManager.manager.GetGameState() == GameState.Dead)
             return;
 
-        timeMesure+= Time.deltaTime;
+        timeMesure += Time.fixedDeltaTime;
 
         if ((myTransform.position - GamePlayManager.manager.playerTransform.position).magnitude <= 20)
             return;
@@ -42,14 +42,14 @@ public class Shooter : MonoBehaviour
             centerPos = Random.Range(-1, 2) * 2;
             shootPos.x = centerPos;
 
-            if (projectileQueue.Count == 0)
+            if (projectileQueue.Count < 1)
                 return;
 
             GameObject projObj = projectileQueue.Dequeue();
             activeProjectiles.Add(projObj);
             projObj.SetActive(true);
-            projObj.transform.position = shootPos + myTransform.position;
-            projObj.transform.rotation = Quaternion.Inverse(Quaternion.identity);
+            projObj.GetComponent<Rigidbody>().position = shootPos + myTransform.position;
+            projObj.GetComponent<Rigidbody>().rotation = Quaternion.identity;
         }
     }
 
@@ -83,6 +83,7 @@ public class Shooter : MonoBehaviour
     {
         if(other.gameObject.tag == "Projectile")
         {
+            other.transform.position = shootPos + myTransform.position;
             projectileQueue.Enqueue(other.gameObject);
             activeProjectiles.Remove(other.gameObject);
             other.gameObject.SetActive(false);

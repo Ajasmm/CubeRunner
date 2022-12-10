@@ -14,23 +14,33 @@ public class Shooter_Projectile : MonoBehaviour
     Shooter shooter;
 
 
+    private void OnEnable()
+    {   if (myTransform != null)
+            pos = myTransform.position;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
         myTransform = transform;
         rBody = GetComponent<Rigidbody>();
+        pos = myTransform.position;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        pos = myTransform.position;
         pos.z += -speed * Time.fixedDeltaTime;
         rBody.MovePosition(pos);
+        rBody.rotation = Quaternion.identity;
     }
 
     private void OnCollisionEnter(Collision collision)
     {
+        if(collision.rigidbody == null)
+            return;
+
+
         if (collision.rigidbody.gameObject.tag == "Player")
         {
             Vector3 direction = collision.transform.position - collision.contacts[0].point;

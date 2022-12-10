@@ -10,11 +10,13 @@ public class Propellor : MonoBehaviour
     Vector3 euler;
 
     Transform myTransform;
+    Rigidbody rBody;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        rBody = GetComponent<Rigidbody>();
         myTransform = transform;
         euler = myTransform.eulerAngles;
     }
@@ -27,11 +29,14 @@ public class Propellor : MonoBehaviour
             GamePlayManager.manager.propellers.Add(this.gameObject);
             gameObject.SetActive(false);
         }
+    }
 
+    private void FixedUpdate()
+    {
         euler.x += direction * speed * Time.deltaTime;
         euler.x %= 360F;
 
-        myTransform.eulerAngles = euler;
+        rBody.rotation = Quaternion.Euler(euler);
     }
     private void OnCollisionEnter(Collision collision)
     {

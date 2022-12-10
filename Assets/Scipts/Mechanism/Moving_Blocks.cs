@@ -11,6 +11,7 @@ public class Moving_Blocks : MonoBehaviour
     [SerializeField] float timeFactor = 0, currentSpeed = 0;
 
     Transform myTransform;
+    Rigidbody rBody;
 
 
     // Start is called before the first frame update
@@ -20,6 +21,8 @@ public class Moving_Blocks : MonoBehaviour
         initPos = myTransform.position;
         currentPos = initPos;
         currentSpeed = speed / 10F;
+
+        rBody = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -30,7 +33,7 @@ public class Moving_Blocks : MonoBehaviour
         currentPos.x = Mathf.Sin(timeFactor * Mathf.PI) * displacementDistance;
         currentPos.x += initPos.x;
 
-        myTransform.position = currentPos;
+        rBody.position = currentPos;
     }
 
     private void OnTriggerEnter(Collider collision)

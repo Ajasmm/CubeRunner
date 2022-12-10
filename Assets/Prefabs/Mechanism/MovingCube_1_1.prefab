@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 621910933391876092}
   - component: {fileID: 8415165058527643863}
   - component: {fileID: 6460956611516536683}
+  - component: {fileID: 946172029609073955}
   - component: {fileID: 8158209688781609871}
   - component: {fileID: 1594693643173439643}
   - component: {fileID: 8837255669774373302}
@@ -86,6 +87,22 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!54 &946172029609073955
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6684435614707882871}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 1
+  m_Constraints: 0
+  m_CollisionDetection: 2
 --- !u!114 &8158209688781609871
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -100,6 +117,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   displacementDistance: 2
   speed: 5
+  timeFactor: 0
+  currentSpeed: 0
 --- !u!65 &1594693643173439643
 BoxCollider:
   m_ObjectHideFlags: 0

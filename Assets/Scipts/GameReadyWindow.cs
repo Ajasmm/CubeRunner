@@ -10,7 +10,7 @@ public class GameReadyWindow : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-              GamePlayManager.manager.gamePlayer.SetState(GameState.Running);
+            GamePlayManager.manager.gamePlayer.SetState(GameState.Running);
             GamePlayManager.manager.RunGame();
         }
     }

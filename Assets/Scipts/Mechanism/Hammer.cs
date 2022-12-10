@@ -13,12 +13,16 @@ public class Hammer : MonoBehaviour
     Vector3 localEuler;
 
     Transform myTransform;
+    Rigidbody rBody;    
 
     // Start is called before the first frame update
     void Start()
     {
         myTransform = transform;
         localEuler = Vector3.zero;
+
+
+        rBody = myTransform.GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -29,7 +33,8 @@ public class Hammer : MonoBehaviour
         sine = Mathf.Sin(time * Mathf.PI);
 
         localEuler.z = range * sine;
-        myTransform.localEulerAngles = localEuler;
+
+        rBody.rotation = Quaternion.Euler(localEuler);
     }
 
     private void OnCollisionEnter(Collision collision)
