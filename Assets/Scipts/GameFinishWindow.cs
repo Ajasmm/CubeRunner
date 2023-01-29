@@ -9,14 +9,14 @@ public class GameFinishWindow : MonoBehaviour
 
     private void OnEnable()
     {
-        if (GamePlayManager.manager != null)
-            m_Text.text = "Won\n" + GamePlayManager.manager.score + "\nPress 'Space' to start";
+        if (GameplayManager.manager != null)
+            m_Text.text = "Won\n" + GameplayManager.manager.score + "\nPress 'Space' to start";
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
-            GamePlayManager.manager.RestartGame();
+            GameplayManager.manager.RestartGame();
     }
 
 }

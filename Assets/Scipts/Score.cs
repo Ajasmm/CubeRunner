@@ -24,13 +24,13 @@ public class Score : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GamePlayManager.manager.playerTransform == null || text == null)
+        if (GameplayManager.manager.playerTransform == null || text == null)
             return;
 
-        pos = GamePlayManager.manager.playerTransform.position.z;
+        pos = GameplayManager.manager.playerTransform.position.z;
         score = (int) (pos - initPos);
 
-        GamePlayManager.manager.score = score;
+        GameplayManager.manager.score = score;
         text.text = "Score : " + score.ToString();
     }
 }

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GamePlayManager : MonoBehaviour
+public class GameplayManager : MonoBehaviour
 {
 
     [SerializeField] GameObject gameStartWindow;
@@ -20,7 +20,7 @@ public class GamePlayManager : MonoBehaviour
 
     public float score;
 
-    public static GamePlayManager manager;
+    public static GameplayManager manager;
 
     GameState gameState;
 

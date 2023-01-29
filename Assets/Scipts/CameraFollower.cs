@@ -23,7 +23,7 @@ public class CameraFollower : MonoBehaviour
         if (target == null)
             return;
 
-        if (GamePlayManager.manager.gamePlayer.GetState() == GameState.Dead)
+        if (GameplayManager.manager.gamePlayer.GetState() == GameState.Dead)
             return;
 
         currentPos = target.position + offsetPos;

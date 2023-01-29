@@ -24,9 +24,9 @@ public class Propellor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(GamePlayManager.manager.playerTransform.position.z > myTransform.position.z + 1)
+        if(GameplayManager.manager.playerTransform.position.z > myTransform.position.z + 1)
         {
-            GamePlayManager.manager.propellers.Add(this.gameObject);
+            GameplayManager.manager.propellers.Add(this.gameObject);
             gameObject.SetActive(false);
         }
     }

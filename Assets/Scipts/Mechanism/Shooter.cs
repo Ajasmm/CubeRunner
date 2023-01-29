@@ -22,18 +22,18 @@ public class Shooter : MonoBehaviour
         StartCoroutine(CreateProjectileList());
         myTransform = transform;
 
-        GamePlayManager.manager.OnGameState += OnGameState;
+        GameplayManager.manager.OnGameState += OnGameState;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (GamePlayManager.manager.GetGameState() == GameState.Ready || GamePlayManager.manager.GetGameState() == GameState.Dead)
+        if (GameplayManager.manager.GetGameState() == GameState.Ready || GameplayManager.manager.GetGameState() == GameState.Dead)
             return;
 
         timeMesure += Time.fixedDeltaTime;
 
-        if ((myTransform.position - GamePlayManager.manager.playerTransform.position).magnitude <= 20)
+        if ((myTransform.position - GameplayManager.manager.playerTransform.position).magnitude <= 20)
             return;
 
         if(timeMesure > timeGap)

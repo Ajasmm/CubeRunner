@@ -10,7 +10,7 @@ public class WinTrigger : MonoBehaviour
         {
             // Do some crack animation
 
-            GamePlayManager.manager.WonGame();
+            GameplayManager.manager.WonGame();
         }
     }
 }

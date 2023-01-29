@@ -23,8 +23,8 @@ public class Cube_Player : MonoBehaviour
         rbody = GetComponent<Rigidbody>();
         myTransform = transform;
 
-        GamePlayManager.manager.gamePlayer = this;
-        GamePlayManager.manager.playerTransform = myTransform;
+        GameplayManager.manager.gamePlayer = this;
+        GameplayManager.manager.playerTransform = myTransform;
 
         playerInput = new PlayerInput(false);
     }
@@ -85,11 +85,11 @@ public class Cube_Player : MonoBehaviour
     public void SetState(GameState state)
     {
         playerState = state;
-        GamePlayManager.manager.SetGameState(playerState);
+        GameplayManager.manager.SetGameState(playerState);
 
         if(state == GameState.Dead)
         {
-            GamePlayManager.manager.EndGame();
+            GameplayManager.manager.EndGame();
         }
     }
 
