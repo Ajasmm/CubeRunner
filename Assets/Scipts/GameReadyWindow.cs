@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameReadyWindow : MonoBehaviour
@@ -10,8 +9,15 @@ public class GameReadyWindow : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            GameplayManager.manager.gamePlayer.SetState(GameState.Running);
-            GameplayManager.manager.RunGame();
+            StartCoroutine(StartGame());
         }
+    }
+
+    IEnumerator StartGame()
+    {
+        yield return new WaitForEndOfFrame();
+
+        GameplayManager.manager.gamePlayer.SetState(GameState.Running);
+        GameplayManager.manager.RunGame();
     }
 }
